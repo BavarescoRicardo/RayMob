@@ -99,5 +99,5 @@ public class Player {
 
     public double getTurnAngle() {
         return turnAngle;
-    }
+    }    
 }
