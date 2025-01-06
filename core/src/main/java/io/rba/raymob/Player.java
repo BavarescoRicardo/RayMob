@@ -56,30 +56,28 @@ public class Player {
 
     // Atualização da posição do jogador
     public void updateMovement() {
-        // Calcula a nova posição do jogador
         double newX = this.x + (this.move * Math.cos(this.turnAngle) * this.moveSpeed);
         double newY = this.y + (this.move * Math.sin(this.turnAngle) * this.moveSpeed);
-
-        // Converte as novas coordenadas para índices de matriz
-        int gridX = (int) Math.floor(newX / map.getWidth());
-        int gridY = (int) Math.floor(newY / map.getHeigth());
-
-
-        // Verifica colisão com o mapa
+    
+        int gridX = (int) Math.floor(newX / 60);
+        int gridY = (int) Math.floor(newY / 60);
+    
+        // Validar os limites antes de verificar colisão
+        if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeigth()) {
+            System.out.println("Tentativa de acessar índice fora dos limites: gridX=" + gridX + ", gridY=" + gridY);
+            return;
+        }
+    
         if (!collision.colide(gridX, gridY, this.map)) {
-            // Atualiza a posição apenas se não houver colisão
             this.x = newX;
             this.y = newY;
         }
-
-        // Atualiza o ângulo de rotação
+    
         this.turnAngle += this.turn * this.turnSpeed;
-        if (this.turnAngle > 2 * Math.PI) {
-            this.turnAngle = 0;
-        }
-        if (this.turnAngle < 0) {
-            this.turnAngle += 2 * Math.PI;
-        }
+        if (this.turnAngle > 2 * Math.PI) this.turnAngle = 0;
+        if (this.turnAngle < 0) this.turnAngle += 2 * Math.PI;
+    
+        // System.out.println("x: " + x + ", y: " + y + ", move: " + move + ", turn: " + turn + ", angle: " + turnAngle);
     }
 
     // Métodos getter para posição e ângulo

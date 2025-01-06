@@ -1,6 +1,8 @@
 package io.rba.raymob;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -9,7 +11,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class Main extends ApplicationAdapter {
     private SpriteBatch batch;
     private Texture image, playerImg;
-    Player player;
+    private Player player;
+    private Hud hud;
 
     @Override
     public void create() {
@@ -17,7 +20,23 @@ public class Main extends ApplicationAdapter {
         image = new Texture("libgdx.png");
         playerImg = new Texture("dm.png");
         Cenario cenario = new Cenario();
-        player = new Player(100, 200, cenario);
+        player = new Player(150, 150, cenario); // cordenadas iniciais do player e mapa por parametro para ver colisoes
+        hud = new Hud(player);
+
+        // Configurar eventos de toque
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            @Override
+            public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+                hud.handleInput(screenX, screenY, false);
+                return true;
+            }
+
+            @Override
+            public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+                hud.handleInput(screenX, screenY, true);
+                return true;
+            }
+        });
 
     }
 
@@ -25,8 +44,10 @@ public class Main extends ApplicationAdapter {
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
+        // poderia desenhar o fundo aqui // por exemplo o chao e o teto        
         // batch.draw(image, 140, 210);
         batch.draw(playerImg, player.getIntegerX(), player.getIntegerY());
+        hud.render(batch);
         batch.end();
     }
 

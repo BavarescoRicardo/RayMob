@@ -23,7 +23,7 @@ public class Hud {
         float screenWidth = Gdx.graphics.getWidth();
         float screenHeight = Gdx.graphics.getHeight();
 
-        float buttonSize = screenWidth * 0.1f; // 10% da largura da tela
+        float buttonSize = screenWidth * 0.065f; // 10% da largura da tela
         float margin = screenWidth * 0.02f; // 2% de margem
 
         this.buttonUp = new Rectangle(screenWidth / 2 - buttonSize / 2, margin + buttonSize * 2, buttonSize, buttonSize);
@@ -35,6 +35,7 @@ public class Hud {
     public void handleInput(float touchX, float touchY, boolean isRelease) {
         // Ajustar coordenadas para o sistema de coordenadas do LibGDX
         touchY = Gdx.graphics.getHeight() - touchY;
+        player.updateMovement();
 
         if (buttonUp.contains(touchX, touchY)) {
             if (isRelease) {
@@ -60,7 +61,7 @@ public class Hud {
             } else {
                 player.moveRight();
             }
-        }
+        }        
     }
 
     public void render(SpriteBatch batch) {
