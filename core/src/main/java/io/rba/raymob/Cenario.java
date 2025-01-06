@@ -37,26 +37,28 @@ public class Cenario {
     }
 
     public void drawMap(SpriteBatch batch) {
-        ShapeRenderer shapeRenderer = new ShapeRenderer(); // Create a ShapeRenderer instance
+        float tileWidth = (float) Gdx.graphics.getWidth() / getWidth();
+        float tileHeight = (float) Gdx.graphics.getHeight() / getHeight();
+    
+        ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
+    
         for (int y = 0; y < matriz.length; y++) {
             for (int x = 0; x < matriz[y].length; x++) {
                 if (matriz[y][x] == 1) {
-                    shapeRenderer.setColor(Color.DARK_GRAY); // Wall color
+                    shapeRenderer.setColor(Color.DARK_GRAY); // Cor das paredes
                 } else {
-                    shapeRenderer.setColor(Color.LIGHT_GRAY); // Floor color
+                    shapeRenderer.setColor(Color.LIGHT_GRAY); // Cor do chão
                 }
-
-                // Draw each tile
+    
                 shapeRenderer.rect(
-                    x * 60, 
-                    Gdx.graphics.getHeight() - (y + 1) * 60,
-                    60, 60
+                    x * tileWidth,
+                    Gdx.graphics.getHeight() - (y + 1) * tileHeight,
+                    tileWidth, tileHeight
                 );
             }
         }
-
+    
         shapeRenderer.end();
     }
 }

@@ -44,15 +44,22 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+    
+        // Desenhar o mapa
         batch.begin();
-        // poderia desenhar o fundo aqui // por exemplo o chao e o teto        
-        // batch.draw(image, 140, 210);
+        cenario.drawMap(batch);
+        batch.end();
+    
+        // Desenhar o jogador
+        batch.begin();
+        batch.draw(playerImg, player.getIntegerX(), player.getIntegerY(), 60, 60); // Tamanho ajustado para 60x60
+        batch.end();
+    
+        // Desenhar o HUD
+        batch.begin();
         hud.render(batch);
-        batch.draw(playerImg, player.getIntegerX(), player.getIntegerY());
-        cenario.drawMap(batch);        
         batch.end();
     }
-
     @Override
     public void dispose() {
         batch.dispose();
