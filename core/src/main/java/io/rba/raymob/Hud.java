@@ -71,12 +71,4 @@ public class Hud {
         batch.draw(imgLeft, buttonLeft.x, buttonLeft.y, buttonLeft.width, buttonLeft.height);
         batch.draw(imgRight, buttonRight.x, buttonRight.y, buttonRight.width, buttonRight.height);
     }
-
-    public void dispose() {
-        // Liberar recursos
-        imgUp.dispose();
-        imgDown.dispose();
-        imgLeft.dispose();
-        imgRight.dispose();
-    }
 }

@@ -63,7 +63,7 @@ public class Player {
         int gridY = (int) Math.floor(newY / 60);
     
         // Validar os limites antes de verificar colisão
-        if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeigth()) {
+        if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight()) {
             System.out.println("Tentativa de acessar índice fora dos limites: gridX=" + gridX + ", gridY=" + gridY);
             return;
         }
