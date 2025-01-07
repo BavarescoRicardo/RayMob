@@ -24,7 +24,7 @@ public class Main extends ApplicationAdapter {
         image = new Texture("libgdx.png");
         playerImg = new Texture("dm.png");
         cenario = new Cenario();
-        player = new Player(150, 150, cenario); // cordenadas iniciais do player e mapa por parametro para ver colisoes
+        player = new Player(150, 150, cenario); // coordenadas iniciais do player e mapa por parâmetro para ver colisões
         hud = new Hud(player);
 
         // Configurar eventos de toque
@@ -41,11 +41,11 @@ public class Main extends ApplicationAdapter {
                 return true;
             }
         });
-
     }
 
     @Override
     public void render() {
+        // Limpar a tela
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
         // Renderizar o mapa
@@ -53,32 +53,41 @@ public class Main extends ApplicationAdapter {
         cenario.drawMap(batch);
         batch.end();
 
+        // Renderizar os raios
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        // Definir ângulo de visão do jogador e campo de visão
-        double playerAngle = Math.toRadians(player.getTurnAngle()); // Supondo que player.getAngle() retorna o ângulo em graus
-        double fov = Math.toRadians(60); // Campo de visão de 60 graus
-        int rayCount = 60; // Quantidade de raios no campo de visão
+        renderRays();
+        shapeRenderer.end();
 
-        // Calcular raios no campo de visão
-        for (int i = 0; i <= rayCount; i++) {
-            // Distribuir raios dentro do campo de visão
-            double rayAngle = playerAngle - fov / 2 + (fov / rayCount) * i;
-            Ray ray = new Ray(player.getX(), player.getY(), rayAngle, cenario);
-            ray.render(shapeRenderer);
-        }
-
-    shapeRenderer.end();
-
-        // Renderizar o jogador
+        // Renderizar o jogador e a HUD
         batch.begin();
         batch.draw(playerImg, player.getIntegerX(), player.getIntegerY(), 60, 60);
         hud.render(batch);
         batch.end();
     }
 
+    /**
+     * Renderizar os raios baseados no campo de visão do jogador.
+     */
+    private void renderRays() {
+        // Configurar ângulo de visão do jogador e campo de visão
+        double playerAngle = Math.toRadians(player.getTurnAngle()); // Supondo que player.getTurnAngle() retorna o ângulo em graus
+        double fov = Math.toRadians(60); // Campo de visão de 60 graus
+        int rayCount = 60; // Quantidade de raios no campo de visão
+
+        // Calcular e renderizar cada raio
+        for (int i = 0; i <= rayCount; i++) {
+            // Distribuir raios dentro do campo de visão
+            double rayAngle = playerAngle - fov / 2 + (fov / rayCount) * i;
+            Ray ray = new Ray(cenario, player);
+            ray.render(shapeRenderer);
+        }
+    }
+
     @Override
     public void dispose() {
         batch.dispose();
-        image.dispose();        
+        image.dispose();
+        playerImg.dispose();
+        shapeRenderer.dispose();
     }
 }

@@ -4,49 +4,107 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.Color;
 
 public class Ray {
-    private double startX, startY; // Posição inicial do raio
-    private double directionX, directionY; // Direção do raio
     private Cenario map;
+    private Player player;
 
-    public Ray(double startX, double startY, double angle, Cenario map) {
-        this.startX = startX;
-        this.startY = startY;
-        this.directionX = Math.cos(angle); // Direção baseada no ângulo
-        this.directionY = Math.sin(angle);
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
+    }
+
+    public Ray(Cenario map, Player player) {
         this.map = map;
+        this.player = player;
     }
 
     public double[] cast() {
-        double x = startX;
-        double y = startY;
+        double interceptX, interceptY;
+        double stepX, stepY;
+        double turnAngle = player.getTurnAngle();
+        double startX = player.getX();
+        double startY = player.getY();
 
-        // Incrementos por grid (usando o passo do raycasting)
-        double stepSize = 1.0; // Pode ajustar conforme necessário
+        boolean down = turnAngle > 0 && turnAngle < Math.PI;
+        boolean left = turnAngle > Math.PI / 2 && turnAngle < 3 * Math.PI / 2;
 
-        while (true) {
-            int gridX = (int) Math.floor(x / 60); // Cada célula do mapa tem tamanho 60
-            int gridY = (int) Math.floor(y / 60);
+        // Configuração do tamanho do tile
+        int tileSize = 60;
 
-            // Verificar se o raio está fora do mapa
-            if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight()) {
-                break;
+        // Interseções horizontais
+        boolean hitHorizontal = false;
+        interceptY = Math.floor(startY / tileSize) * tileSize;
+        if (down) {
+            interceptY += tileSize;
+        }
+        interceptX = startX + (interceptY - startY) / Math.tan(turnAngle);
+
+        stepY = down ? tileSize : -tileSize;
+        stepX = stepY / Math.tan(turnAngle);
+
+        double nextXH = interceptX;
+        double nextYH = interceptY;
+        double wallHitXHorizontal = 0, wallHitYHorizontal = 0;
+
+        while (!hitHorizontal) {
+            int gridX = (int) Math.floor(nextXH / tileSize);
+            int gridY = down ? (int) Math.floor(nextYH / tileSize) : (int) Math.floor((nextYH - 1) / tileSize);
+
+            if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight() || map.getMatriz()[gridY][gridX] == 1) {
+                hitHorizontal = true;
+                wallHitXHorizontal = nextXH;
+                wallHitYHorizontal = nextYH;
+            } else {
+                nextXH += stepX;
+                nextYH += stepY;
             }
-
-            // Verificar colisão com uma parede
-            if (map.getMatriz()[gridY][gridX] == 1) {
-                return new double[]{x, y};
-            }
-
-            // Avançar o raio
-            x += directionX * stepSize;
-            y += directionY * stepSize;
         }
 
-        return new double[]{x, y}; // Caso não haja colisão, retorna a borda
+        // Interseções verticais
+        boolean hitVertical = false;
+        interceptX = Math.floor(startX / tileSize) * tileSize;
+        if (!left) {
+            interceptX += tileSize;
+        }
+        interceptY = startY + (interceptX - startX) * Math.tan(turnAngle);
+
+        stepX = left ? -tileSize : tileSize;
+        stepY = stepX * Math.tan(turnAngle);
+
+        double nextXV = interceptX;
+        double nextYV = interceptY;
+        double wallHitXVertical = 0, wallHitYVertical = 0;
+
+        while (!hitVertical) {
+            int gridX = left ? (int) Math.floor((nextXV - 1) / tileSize) : (int) Math.floor(nextXV / tileSize);
+            int gridY = (int) Math.floor(nextYV / tileSize);
+
+            if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight() || map.getMatriz()[gridY][gridX] == 1) {
+                hitVertical = true;
+                wallHitXVertical = nextXV;
+                wallHitYVertical = nextYV;
+            } else {
+                nextXV += stepX;
+                nextYV += stepY;
+            }
+        }
+
+        // Escolher a interseção mais próxima
+        double distHorizontal = Math.hypot(wallHitXHorizontal - startX, wallHitYHorizontal - startY);
+        double distVertical = Math.hypot(wallHitXVertical - startX, wallHitYVertical - startY);
+
+        if (distHorizontal < distVertical) {
+            return new double[]{wallHitXHorizontal, wallHitYHorizontal};
+        } else {
+            return new double[]{wallHitXVertical, wallHitYVertical};
+        }
     }
 
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.RED);
-        shapeRenderer.line((float) startX, (float) startY, (float) cast()[0], (float) cast()[1]);
+        double[] endPoint = cast();
+        shapeRenderer.line((float) player.getIntegerX(), (float) player.getIntegerX(), (float) endPoint[0], (float) endPoint[1]);
     }
 }
