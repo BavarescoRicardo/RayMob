@@ -6,29 +6,23 @@ import com.badlogic.gdx.graphics.Color;
 public class Ray {
     private Cenario map;
     private Player player;
+    private double rayAngle; // Ângulo do raio
 
-    public Player getPlayer() {
-        return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Ray(Cenario map, Player player) {
+    public Ray(Cenario map, Player player, double rayAngle) {
         this.map = map;
         this.player = player;
+        this.rayAngle = rayAngle;
     }
 
     public double[] cast() {
         double interceptX, interceptY;
         double stepX, stepY;
-        double turnAngle = player.getTurnAngle();
         double startX = player.getX();
         double startY = player.getY();
+        this.rayAngle += player.getTurnAngle();
 
-        boolean down = turnAngle > 0 && turnAngle < Math.PI;
-        boolean left = turnAngle > Math.PI / 2 && turnAngle < 3 * Math.PI / 2;
+        boolean down = rayAngle > 0 && rayAngle < Math.PI;
+        boolean left = rayAngle > Math.PI / 2 && rayAngle < 3 * Math.PI / 2;
 
         // Configuração do tamanho do tile
         int tileSize = 60;
@@ -39,10 +33,10 @@ public class Ray {
         if (down) {
             interceptY += tileSize;
         }
-        interceptX = startX + (interceptY - startY) / Math.tan(turnAngle);
+        interceptX = startX + (interceptY - startY) / Math.tan(rayAngle);
 
         stepY = down ? tileSize : -tileSize;
-        stepX = stepY / Math.tan(turnAngle);
+        stepX = stepY / Math.tan(rayAngle);
 
         double nextXH = interceptX;
         double nextYH = interceptY;
@@ -68,10 +62,10 @@ public class Ray {
         if (!left) {
             interceptX += tileSize;
         }
-        interceptY = startY + (interceptX - startX) * Math.tan(turnAngle);
+        interceptY = startY + (interceptX - startX) * Math.tan(rayAngle);
 
         stepX = left ? -tileSize : tileSize;
-        stepY = stepX * Math.tan(turnAngle);
+        stepY = stepX * Math.tan(rayAngle);
 
         double nextXV = interceptX;
         double nextYV = interceptY;
@@ -105,6 +99,6 @@ public class Ray {
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.RED);
         double[] endPoint = cast();
-        shapeRenderer.line((float) player.getIntegerX(), (float) player.getIntegerX(), (float) endPoint[0], (float) endPoint[1]);
+        shapeRenderer.line((float) player.getX(), (float) player.getY(), (float) endPoint[0], (float) endPoint[1]);
     }
 }

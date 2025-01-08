@@ -21,7 +21,6 @@ public class Hud {
 
         // Definir áreas clicáveis para os botões
         float screenWidth = Gdx.graphics.getWidth();
-        float screenHeight = Gdx.graphics.getHeight();
 
         float buttonSize = screenWidth * 0.065f; // 10% da largura da tela
         float margin = screenWidth * 0.02f; // 2% de margem
