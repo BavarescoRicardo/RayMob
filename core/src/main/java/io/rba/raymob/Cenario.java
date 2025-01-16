@@ -19,6 +19,15 @@ public class Cenario {
         {1, 0, 0, 0, 0, 1, 1, 0, 0, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     };
+    private int tileSize;
+
+    public int getTileSize() {
+        return tileSize;
+    }
+
+    public void setTileSize(int tileSize) {
+        this.tileSize = tileSize;
+    }
 
     public Cenario() {
         // Initialize any additional resources if needed
@@ -39,7 +48,7 @@ public class Cenario {
     public void drawMap(SpriteBatch batch) {
         float tileWidth = (float) Gdx.graphics.getWidth() / getWidth();
         float tileHeight = (float) Gdx.graphics.getHeight() / getHeight();
-    
+        this.setTileSize((int) tileHeight);
         ShapeRenderer shapeRenderer = new ShapeRenderer();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     

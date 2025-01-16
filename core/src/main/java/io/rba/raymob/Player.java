@@ -59,8 +59,8 @@ public class Player {
         double newX = this.x + (this.move * Math.cos(this.turnAngle) * this.moveSpeed);
         double newY = this.y + (this.move * Math.sin(this.turnAngle) * this.moveSpeed);
     
-        int gridX = (int) Math.floor(newX / 60);
-        int gridY = (int) Math.floor(newY / 60);
+        int gridX = (int) Math.floor(newX / map.getTileSize());
+        int gridY = (int) Math.floor(newY / map.getTileSize());
     
         // Validar os limites antes de verificar colisão
         if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight()) {
@@ -68,7 +68,7 @@ public class Player {
             return;
         }
     
-        if (!collision.colide(gridX, gridY, this.map)) {
+        if (collision.colide(gridX, gridY, this.map)) {
             this.x = newX;
             this.y = newY;
         }

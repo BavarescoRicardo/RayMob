@@ -25,7 +25,8 @@ public class Ray {
         boolean left = rayAngle > Math.PI / 2 && rayAngle < 3 * Math.PI / 2;
 
         // Configuração do tamanho do tile
-        int tileSize = 60;
+        int tileSize = map.getTileSize();
+        // int tileSize = 60;
 
         // Interseções horizontais
         boolean hitHorizontal = false;
@@ -101,4 +102,34 @@ public class Ray {
         double[] endPoint = cast();
         shapeRenderer.line((float) player.getX(), (float) player.getY(), (float) endPoint[0], (float) endPoint[1]);
     }
+
+    // metodo para renderizar em 3d
+    public void wallRender3d() {
+        this.cast();      
+
+        double heightTile = 500;
+        // double perpectiveDistance = (map.getWidth() / 2)/Math.tan(Math.toRadians(60)/2);
+        // double wallHeigth = heightTile / this.distance * perpectiveDistance;
+
+        // // Calculos parede para visao do jogador
+        // double y0 = parseInt((map.getHeight() / 2) - parseInt(wallHeigth / 2));
+        // double y1 = y0 + wallHeigth;
+        // double x = this.column;
+
+        // draw simulated 3d world
+        // cast image sprite 
+        // double imageHeigth = y0 - y1;
+        // shapeRenderer.drawImage(
+        //     this.tiles,
+        //     this.texturePixel,
+        //     0,
+        //     1,
+        //     64,
+        //     this.column,
+        //     y1,
+        //     1,
+        //     imageHeigth // altura imagem fixo em 64            
+        // );
+
+    }    
 }
