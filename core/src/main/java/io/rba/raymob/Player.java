@@ -59,16 +59,16 @@ public class Player {
         double newX = this.x + (this.move * Math.cos(this.turnAngle) * this.moveSpeed);
         double newY = this.y + (this.move * Math.sin(this.turnAngle) * this.moveSpeed);
     
-        int gridX = (int) Math.floor(newX / map.getTileSize());
-        int gridY = (int) Math.floor(newY / map.getTileSize());
+        int gridX = (int) Math.floor(newX / this.map.getTileSize());
+        int gridY = (int) Math.floor(newY / this.map.getTileSize());
     
         // Validar os limites antes de verificar colisão
-        if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight()) {
+        if (gridX < 0 || gridY < 0 || gridX > this.map.getWidth() || gridY > this.map.getHeight()) {
             System.out.println("Tentativa de acessar índice fora dos limites: gridX=" + gridX + ", gridY=" + gridY);
             return;
         }
     
-        if (collision.colide(gridX, gridY, this.map)) {
+        if (!collision.colide(gridX, gridY, this.map)) {
             this.x = newX;
             this.y = newY;
         }
