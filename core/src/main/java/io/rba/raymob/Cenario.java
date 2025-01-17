@@ -34,7 +34,21 @@ public class Cenario {
     }
 
     public int[][] getMatriz() {
-        return this.matriz;
+        // return this.matriz;
+        return this.invertMatriz(this.matriz);
+    }
+
+    private int[][] invertMatriz(int[][] originalMatriz){
+        int rows = originalMatriz.length; // Número de linhas
+        int cols = originalMatriz[0].length; // Número de colunas
+        int[][] invertedMatriz = new int[rows][cols]; // Nova matriz com linhas invertidas
+    
+        // Inverte a ordem das linhas
+        for (int i = 0; i < rows; i++) {
+            invertedMatriz[i] = originalMatriz[rows - 1 - i];
+        }
+    
+        return invertedMatriz;       
     }
 
     public int getWidth() {
