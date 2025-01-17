@@ -17,15 +17,15 @@ public class Ray {
     public double[] cast() {
         double interceptX, interceptY;
         double stepX, stepY;
-        double startX = player.getX();
-        double startY = player.getY();
-        this.rayAngle += player.getTurnAngle();
+        double startX = this.player.getX();
+        double startY = this.player.getY();
+        this.rayAngle += this.player.getTurnAngle();
 
         boolean down = rayAngle > 0 && rayAngle < Math.PI;
         boolean left = rayAngle > Math.PI / 2 && rayAngle < 3 * Math.PI / 2;
 
         // Configuração do tamanho do tile
-        int tileSize = map.getTileSize();
+        int tileSize = this.map.getTileSize();
         // int tileSize = 60;
 
         // Interseções horizontais
@@ -47,7 +47,7 @@ public class Ray {
             int gridX = (int) Math.floor(nextXH / tileSize);
             int gridY = down ? (int) Math.floor(nextYH / tileSize) : (int) Math.floor((nextYH - 1) / tileSize);
 
-            if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight() || map.getMatriz()[gridY][gridX] == 1) {
+            if (gridX < 0 || gridY < 0 || gridX >= this.map.getWidth() || gridY >= this.map.getHeight() || this.map.getMatriz()[gridY][gridX] == 1) {                
                 hitHorizontal = true;
                 wallHitXHorizontal = nextXH;
                 wallHitYHorizontal = nextYH;
@@ -76,7 +76,7 @@ public class Ray {
             int gridX = left ? (int) Math.floor((nextXV - 1) / tileSize) : (int) Math.floor(nextXV / tileSize);
             int gridY = (int) Math.floor(nextYV / tileSize);
 
-            if (gridX < 0 || gridY < 0 || gridX >= map.getWidth() || gridY >= map.getHeight() || map.getMatriz()[gridY][gridX] == 1) {
+            if (gridX < 0 || gridY < 0 || gridX >= this.map.getWidth() || gridY >= this.map.getHeight() || this.map.getMatriz()[gridY][gridX] == 1) {
                 hitVertical = true;
                 wallHitXVertical = nextXV;
                 wallHitYVertical = nextYV;
@@ -100,7 +100,7 @@ public class Ray {
     public void render(ShapeRenderer shapeRenderer) {
         shapeRenderer.setColor(Color.RED);
         double[] endPoint = cast();
-        shapeRenderer.line((float) player.getX(), (float) player.getY(), (float) endPoint[0], (float) endPoint[1]);
+        shapeRenderer.line((float) this.player.getX(), (float) this.player.getY(), (float) endPoint[0], (float) endPoint[1]);
     }
 
     // metodo para renderizar em 3d
@@ -108,11 +108,11 @@ public class Ray {
         this.cast();      
 
         // double heightTile = 500;
-        // double perpectiveDistance = (map.getWidth() / 2)/Math.tan(Math.toRadians(60)/2);
+        // double perpectiveDistance = (this.map.getWidth() / 2)/Math.tan(Math.toRadians(60)/2);
         // double wallHeigth = heightTile / this.distance * perpectiveDistance;
 
         // // Calculos parede para visao do jogador
-        // double y0 = parseInt((map.getHeight() / 2) - parseInt(wallHeigth / 2));
+        // double y0 = parseInt((this.map.getHeight() / 2) - parseInt(wallHeigth / 2));
         // double y1 = y0 + wallHeigth;
         // double x = this.column;
 
