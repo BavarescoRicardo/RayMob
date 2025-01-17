@@ -107,7 +107,7 @@ public class Ray {
     public void wallRender3d() {
         this.cast();      
 
-        double heightTile = 500;
+        // double heightTile = 500;
         // double perpectiveDistance = (map.getWidth() / 2)/Math.tan(Math.toRadians(60)/2);
         // double wallHeigth = heightTile / this.distance * perpectiveDistance;
 
