@@ -75,9 +75,10 @@ public class Main extends ApplicationAdapter {
         int rayCount = 60; // Quantidade de raios no campo de visão
 
         // Calcular e renderizar cada raio
-        for (int i = 0; i <= rayCount; i++) {
+        for (int i = 0; i < rayCount; i++) {
             // Distribuir raios dentro do campo de visão
             double rayAngle = playerAngle - fov / 2 + (fov / rayCount) * i;
+            // double rayAngle = playerAngle;
 
             // Criar um novo raio para o ângulo atual
             Ray ray = new Ray(cenario, player, rayAngle);
