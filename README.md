@@ -62,6 +62,8 @@ Estrutura
     Android: Plataforma para dispositivos móveis Android.
 
 Gradle
+Para fazer o release o comando no terminal deve ser ./gradlew assembleRelease
+
 
 Este projeto utiliza Gradle para gerenciamento de dependências. Algumas tarefas úteis incluem:
 
