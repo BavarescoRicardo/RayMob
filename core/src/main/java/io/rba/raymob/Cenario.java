@@ -22,6 +22,9 @@ public class Cenario {
     private int tileSize;
 
     public int getTileSize() {
+        if (tileSize <= 0) {
+            tileSize = Math.min(Gdx.graphics.getWidth() / getWidth(), Gdx.graphics.getHeight() / getHeight());
+        }
         return tileSize;
     }
 
