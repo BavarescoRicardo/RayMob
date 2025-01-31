@@ -24,15 +24,24 @@ public class Ray {
     }
 
     public void wallRender3d(SpriteBatch batch, int columnIndex) {
-        cast();
+        cast(); // Calculate the distance to the wall
+
+        // Fisheye correction: Multiply distance by the cosine of the angle difference
+        float angleDifference = rayAngle - (float) Math.toRadians(player.getTurnAngle());
+        float correctedDistance = distance * MathUtils.cos(angleDifference);
+
+        // Avoid division by zero or invalid distances
+        if (correctedDistance < 60) {
+            correctedDistance = 60; // Set a minimum distance to avoid rendering issues
+        }
 
         // Calculate wall height
-        float perspectiveDistance = (Gdx.graphics.getWidth() / 2) / MathUtils.tan(MathUtils.PI / 6); // FOV = 60 degrees
-        float wallHeight = (cenario.getTileSize() / distance) * perspectiveDistance;
+        float projectionPlaneDistance = (Gdx.graphics.getWidth() / 2) / MathUtils.tan(MathUtils.PI / 6); // FOV = 60 degrees
+        float wallHeight = (cenario.getTileSize() / correctedDistance) * projectionPlaneDistance;
 
         // Calculate column position
         float y0 = (Gdx.graphics.getHeight() / 2) - (wallHeight / 2);
-        float columnWidth = Gdx.graphics.getWidth() / 60.0f; // 60 columns
+        float columnWidth = (float) Gdx.graphics.getWidth() / 60; // 60 columns
         float columnX = columnIndex * columnWidth;
 
         // Draw wall column
@@ -45,7 +54,7 @@ public class Ray {
         );
     }
 
-    public double[] cast() {
+    public void cast() {
         double interceptX, interceptY;
         double stepX, stepY;
         double startX = player.getX();
@@ -135,10 +144,8 @@ public class Ray {
 
         if (distHorizontal < distVertical) {
             this.distance = (float) distHorizontal;
-            return new double[]{wallHitXHorizontal, wallHitYHorizontal};
         } else {
             this.distance = (float) distVertical;
-            return new double[]{wallHitXVertical, wallHitYVertical};
         }
     }
 }
