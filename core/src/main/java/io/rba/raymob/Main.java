@@ -84,8 +84,6 @@ public class Main extends ApplicationAdapter {
 
     private void renderMinimap() {
         // Minimap settings
-        int minimapWidth = 200; // Width of the minimap
-        int minimapHeight = 200; // Height of the minimap
         int minimapX = 10; // X position of the minimap (bottom-left corner)
         int minimapY = 10; // Y position of the minimap (bottom-left corner)
         int tileSize = 10; // Size of each tile in the minimap

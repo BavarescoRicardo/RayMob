@@ -3,13 +3,11 @@ package io.rba.raymob;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.MathUtils;
 
 public class Ray {
     private Cenario cenario; // Reference to the map
     private Player player; // Reference to the player
     private float rayAngle; // Ray angle in radians
-    private float distance; // Distance to the wall
     private Texture wallTexture; // Texture for walls
 
     public Ray(Cenario cenario, Player player, float rayAngle, Texture wallTexture) {
