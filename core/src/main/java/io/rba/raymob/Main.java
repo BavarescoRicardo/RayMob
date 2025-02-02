@@ -68,6 +68,7 @@ public class Main extends ApplicationAdapter {
 
         // Render minimap
         renderMinimap();
+        player.updateMovement();
     }
 
     private void render3DWorld(SpriteBatch batch) {

@@ -22,8 +22,8 @@ public class Hud {
         // Definir áreas clicáveis para os botões
         float screenWidth = Gdx.graphics.getWidth() + (Gdx.graphics.getWidth() * 0.2f) ;
 
-        float buttonSize = screenWidth * 0.045f; 
-        float margin = screenWidth * 0.015f;  
+        float buttonSize = screenWidth * 0.040f;
+        float margin = screenWidth * 0.015f;
 
         this.buttonUp = new Rectangle(screenWidth / 2 - buttonSize / 2, margin + buttonSize * 2, buttonSize, buttonSize);
         this.buttonDown = new Rectangle(screenWidth / 2 - buttonSize / 2, margin - 5, buttonSize, buttonSize);
@@ -34,8 +34,6 @@ public class Hud {
     public void handleInput(float touchX, float touchY, boolean isRelease) {
         // Ajustar coordenadas para o sistema de coordenadas do LibGDX
         touchY = Gdx.graphics.getHeight() - touchY;
-        player.updateMovement();
-
         if (buttonUp.contains(touchX, touchY)) {
             if (isRelease) {
                 player.releaseMove();
