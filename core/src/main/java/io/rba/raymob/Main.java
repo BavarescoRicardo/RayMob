@@ -84,10 +84,9 @@ public class Main extends ApplicationAdapter {
 
     private void renderMinimap() {
         // Minimap settings
-        int minimapX = 10; // X position of the minimap (left corner)
+        int minimapX = 10; // X position of the minimap (bottom-left corner)
+        int minimapY = 10; // Y position of the minimap (bottom-left corner)
         int tileSize = 10; // Size of each tile in the minimap
-        int minimapHeight = cenario.getHeight() * tileSize; // Total height of the minimap
-        int minimapY = Gdx.graphics.getHeight() - minimapHeight - 10; // Y position of the minimap (upper-left corner)
     
         // Set up ShapeRenderer for the minimap
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
