@@ -8,8 +8,8 @@ public class Player {
     private Collision collision;
     private Cenario map;
 
-    private final double moveSpeed = 6.0; // Velocidade de movimento (pixels por ciclo)
-    private final double turnSpeed = Math.PI / 20; // Velocidade de rotação (radianos por ciclo)
+    private final double moveSpeed = 1.0; // Velocidade de movimento (pixels por ciclo)
+    private final double turnSpeed = Math.PI / 200; // Velocidade de rotação (radianos por ciclo)
 
     public Player(double x, double y, Cenario map) {
         this.x = x;
