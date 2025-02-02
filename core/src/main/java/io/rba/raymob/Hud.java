@@ -20,15 +20,15 @@ public class Hud {
         this.imgRight = new Texture(Gdx.files.internal("arrow-right.png"));
 
         // Definir áreas clicáveis para os botões
-        float screenWidth = Gdx.graphics.getWidth();
+        float screenWidth = Gdx.graphics.getWidth() + (Gdx.graphics.getWidth() * 0.2f) ;
 
-        float buttonSize = screenWidth * 0.065f; // 10% da largura da tela
-        float margin = screenWidth * 0.02f; // 2% de margem
+        float buttonSize = screenWidth * 0.045f; 
+        float margin = screenWidth * 0.015f;  
 
         this.buttonUp = new Rectangle(screenWidth / 2 - buttonSize / 2, margin + buttonSize * 2, buttonSize, buttonSize);
-        this.buttonDown = new Rectangle(screenWidth / 2 - buttonSize / 2, margin, buttonSize, buttonSize);
-        this.buttonLeft = new Rectangle(screenWidth / 2 - buttonSize * 1.5f, margin + buttonSize, buttonSize, buttonSize);
-        this.buttonRight = new Rectangle(screenWidth / 2 + buttonSize / 2, margin + buttonSize, buttonSize, buttonSize);
+        this.buttonDown = new Rectangle(screenWidth / 2 - buttonSize / 2, margin - 5, buttonSize, buttonSize);
+        this.buttonLeft = new Rectangle((screenWidth / 2 - buttonSize * 1.5f) - 5, margin + buttonSize, buttonSize, buttonSize);
+        this.buttonRight = new Rectangle((screenWidth / 2 + buttonSize / 2) + 5, margin + buttonSize, buttonSize, buttonSize);
     }
 
     public void handleInput(float touchX, float touchY, boolean isRelease) {
