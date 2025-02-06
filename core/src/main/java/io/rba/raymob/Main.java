@@ -19,6 +19,8 @@ public class Main extends ApplicationAdapter {
     private Player player;
     private Hud hud;
     private List<Ray> rays;
+    private List<Characters> npcs; // List of NPCs
+    private float[] zBuffer; // Depth buffer for occlusion
 
     @Override
     public void create() {
@@ -40,6 +42,20 @@ public class Main extends ApplicationAdapter {
             rays.add(new Ray(cenario, player, (float) rayAngle, wallTexture));
         }
 
+        // Initialize NPCs
+        npcs = new ArrayList<>();
+        zBuffer = new float[numColumns]; // Depth buffer for occlusion
+        Texture npcTexture1 = new Texture("mechass-resised.png"); // Load NPC texture 1
+        Texture npcTexture2 = new Texture("officer-resised.png"); // Load NPC texture 2
+        Texture npcTexture3 = new Texture("mechass-resised.png"); // Load NPC texture 3
+
+        // Add NPCs at different positions
+        npcs.add(new Characters(200, 100, npcTexture1, player, zBuffer));
+        npcs.add(new Characters(300, 30, npcTexture2, player, zBuffer));
+        npcs.add(new Characters(400, 40, npcTexture3, player, zBuffer));
+        npcs.add(new Characters(250, 350, npcTexture3, player, zBuffer));
+        npcs.add(new Characters(100, 400, npcTexture3, player, zBuffer));
+
         // Configure touch events
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
@@ -59,13 +75,25 @@ public class Main extends ApplicationAdapter {
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-
+    
+        // Update the depth buffer (zBuffer) with raycasting distances
+        for (int i = 0; i < rays.size(); i++) {
+            double[] wallHit = rays.get(i).cast();
+            zBuffer[i] = (float) Math.hypot(wallHit[0] - player.getX(), wallHit[1] - player.getY());
+        }
+    
         // Render 3D world
         batch.begin();
         render3DWorld(batch);
         hud.render(batch);
+    
+        // Render NPCs
+        for (Characters npc : npcs) {
+            npc.drawSprite(batch);
+        }
+    
         batch.end();
-
+    
         // Render minimap
         renderMinimap();
         player.updateMovement();
@@ -88,11 +116,11 @@ public class Main extends ApplicationAdapter {
         int minimapX = 10; // X position of the minimap (bottom-left corner)
         int minimapY = 10; // Y position of the minimap (bottom-left corner)
         int tileSize = 10; // Size of each tile in the minimap
-    
+
         // Set up ShapeRenderer for the minimap
         shapeRenderer.setProjectionMatrix(batch.getProjectionMatrix());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-    
+
         // Draw the map
         for (int y = 0; y < cenario.getHeight(); y++) {
             for (int x = 0; x < cenario.getWidth(); x++) {
@@ -107,7 +135,7 @@ public class Main extends ApplicationAdapter {
                 }
             }
         }
-    
+
         // Draw the player
         shapeRenderer.setColor(Color.BLUE);
         shapeRenderer.circle(
@@ -115,7 +143,7 @@ public class Main extends ApplicationAdapter {
             minimapY + (float) player.getY() / cenario.getTileSize() * tileSize, // Scaled Y position
             5f // Player radius
         );
-    
+
         // Draw the rays
         shapeRenderer.setColor(Color.RED);
         for (Ray ray : rays) {
@@ -127,7 +155,7 @@ public class Main extends ApplicationAdapter {
                 minimapY + (float) endPoint[1] / cenario.getTileSize() * tileSize // End at intersection point
             );
         }
-    
+
         shapeRenderer.end();
     }
 
@@ -136,5 +164,8 @@ public class Main extends ApplicationAdapter {
         batch.dispose();
         shapeRenderer.dispose();
         wallTexture.dispose();
+        for (Characters npc : npcs) {
+            npc.getTexture().dispose(); // Dispose NPC textures
+        }
     }
 }
