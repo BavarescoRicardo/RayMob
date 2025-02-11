@@ -82,11 +82,17 @@ public class Characters {
     
         if (this.visible) {
             float tileHeight = 500; // Base height of the sprite
-            float spriteHeight = (tileHeight / this.distance * PROJECTION_PLANE_DISTANCE)/10;
+            float spriteHeight = (tileHeight / this.distance * PROJECTION_PLANE_DISTANCE) / 10;
+    
+            // Calculate the aspect ratio of the sprite
+            float aspectRatio = (float) texture.getWidth() / texture.getHeight();
+    
+            // Adjust the sprite width based on the aspect ratio
+            float spriteWidth = spriteHeight * aspectRatio;
     
             // Calculate where to draw the sprite
             float y0 = (Gdx.graphics.getHeight() / 2) - (spriteHeight / 2); // Center vertically
-
+    
             // Calculate the sprite's horizontal position
             float dx = (float) (this.x - player.getX());
             float dy = (float) (this.y - player.getY());
@@ -94,14 +100,14 @@ public class Characters {
     
             // Map the sprite angle to the screen columns
             float screenX = (float) (Math.tan(spriteAngle) * PROJECTION_PLANE_DISTANCE);
-            float x1 = (Gdx.graphics.getWidth() / 2) + screenX - (texture.getWidth() / 2);
+            float x1 = (Gdx.graphics.getWidth() / 2) + screenX - (spriteWidth / 2);
     
             // Draw the sprite
             batch.draw(
                 texture,
                 x1, // X position
                 y0, // Y position (top-left corner)
-                texture.getWidth(), // Width
+                spriteWidth, // Width (scaled based on distance)
                 spriteHeight // Height (scaled based on distance)
             );
         }
