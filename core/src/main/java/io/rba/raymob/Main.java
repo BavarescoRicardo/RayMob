@@ -50,11 +50,11 @@ public class Main extends ApplicationAdapter {
         Texture npcTexture3 = new Texture("mechass-resised.png"); // Load NPC texture 3
 
         // Add NPCs at different positions
-        npcs.add(new Characters(200, 100, npcTexture1, player, zBuffer));
-        npcs.add(new Characters(300, 30, npcTexture2, player, zBuffer));
-        npcs.add(new Characters(400, 40, npcTexture3, player, zBuffer));
-        npcs.add(new Characters(250, 350, npcTexture3, player, zBuffer));
-        npcs.add(new Characters(100, 400, npcTexture3, player, zBuffer));
+        npcs.add(new Characters(200, 100, npcTexture1, player));
+        npcs.add(new Characters(300, 30, npcTexture2, player));
+        npcs.add(new Characters(400, 40, npcTexture3, player));
+        npcs.add(new Characters(250, 350, npcTexture3, player));
+        npcs.add(new Characters(100, 400, npcTexture3, player));
 
         // Configure touch events
         Gdx.input.setInputProcessor(new InputAdapter() {

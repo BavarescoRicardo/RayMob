@@ -11,19 +11,17 @@ public class Characters {
     private Player player; // Reference to the player
     private float distance; // Distance to the player
     private boolean visible; // Whether the NPC is visible
-    private float[] zBuffer; // Depth buffer for occlusion
 
     // Constants
     private static final float FOV = MathUtils.degreesToRadians * 60; // Field of view in radians
     private static final float HALF_FOV = FOV / 2; // Half of the field of view
     private static final float PROJECTION_PLANE_DISTANCE = 300 / (float) Math.tan(HALF_FOV); // Distance to the projection plane
 
-    public Characters(float x, float y, Texture texture, Player player, float[] zBuffer) {
+    public Characters(float x, float y, Texture texture, Player player) {
         this.x = x;
         this.y = y;
         this.texture = texture;
         this.player = player;
-        this.zBuffer = zBuffer;
         this.visible = false;
     }
 
@@ -44,11 +42,7 @@ public class Characters {
             diffAngle -= 2 * MathUtils.PI;
         }
 
-        // Check if the NPC is within the player's field of view
         this.visible = Math.abs(diffAngle) < HALF_FOV;
-
-        // Debug log
-        Gdx.app.log("NPC Visibility", "NPC at (" + x + ", " + y + "): " + (visible ? "Visible" : "Not Visible"));
     }
 
     /**
