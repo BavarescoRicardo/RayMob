@@ -55,8 +55,8 @@ public class Characters {
      * Calculate the distance between the NPC and the player.
      */
     private void calcDistance() {
-        float dx = (float) (this.x - player.getX());
-        float dy = (float) (this.y - player.getY());
+        float dx = (float) Math.abs(this.x - player.getX());
+        float dy = (float) Math.abs(this.y - player.getY());
         this.distance = (float) Math.hypot(dx, dy);
     }
 
@@ -79,31 +79,30 @@ public class Characters {
      */
     public void drawSprite(SpriteBatch batch) {
         updateData();
-
+    
         if (this.visible) {
             float tileHeight = 500; // Base height of the sprite
-            float spriteHeight = tileHeight / this.distance * PROJECTION_PLANE_DISTANCE;
-
+            float spriteHeight = (tileHeight / this.distance * PROJECTION_PLANE_DISTANCE)/10;
+    
             // Calculate where to draw the sprite
-            float y0 = (Gdx.graphics.getHeight() / 2) - (spriteHeight / 10);
-            float y1 = y0 + (spriteHeight / 10);
+            float y0 = (Gdx.graphics.getHeight() / 2) - (spriteHeight / 2); // Center vertically
 
             // Calculate the sprite's horizontal position
             float dx = (float) (this.x - player.getX());
             float dy = (float) (this.y - player.getY());
             float spriteAngle = (float) ((float) Math.atan2(dy, dx) - player.getTurnAngle());
-
+    
             // Map the sprite angle to the screen columns
             float screenX = (float) (Math.tan(spriteAngle) * PROJECTION_PLANE_DISTANCE);
             float x1 = (Gdx.graphics.getWidth() / 2) + screenX - (texture.getWidth() / 2);
-
+    
             // Draw the sprite
             batch.draw(
                 texture,
                 x1, // X position
-                y1, // Y position
+                y0, // Y position (top-left corner)
                 texture.getWidth(), // Width
-                texture.getHeight() // Height
+                spriteHeight // Height (scaled based on distance)
             );
         }
     }
